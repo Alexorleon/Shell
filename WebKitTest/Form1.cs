@@ -9,6 +9,9 @@ using System.Windows.Forms;
 using System.Runtime;
 using System.Runtime.InteropServices;
 
+using System.Net;
+using System.IO;
+
 namespace WebKitTest
 {
     public partial class Form1 : Form
@@ -17,8 +20,8 @@ namespace WebKitTest
         private readonly Timer tmrShow; // таймер для периодической проверки соединения
 
         // проверка интернет соединения
-        [DllImport("wininet.dll")]
-        private extern static bool InternetGetConnectedState(out int Description, int ReservedValue);
+        //[DllImport("wininet.dll")]
+        //private extern static bool InternetGetConnectedState(out int Description, int ReservedValue);
 
         private bool isFirst = true; // чтобы лишний раз не дергать страницу
 
@@ -29,11 +32,11 @@ namespace WebKitTest
         {
             InitializeComponent();
             // на весь экран
-            FormBorderStyle = FormBorderStyle.None;
+            /*FormBorderStyle = FormBorderStyle.None;
             WindowState = FormWindowState.Maximized;
             TopMost = true;
 
-            Cursor.Hide();
+            Cursor.Hide();*/
 
             tmrShow = new Timer(); // создаем новый таймер
             tmrShow.Interval = 10000; // ставим интервал выполнения единственного события, через 5 секунд
@@ -89,10 +92,8 @@ namespace WebKitTest
         // проверяем сеть
         private void check_link(object sender, EventArgs e)
         {
-            //bool status = System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable();
-            //MessageBox.Show("status= " + status);
-
-            int Desc;
+            // проверка интернет соединения
+            /*int Desc;
             bool statusConnect = InternetGetConnectedState(out Desc, 0);
 
             // если нет связи, показываем нашу страницу
@@ -104,6 +105,10 @@ namespace WebKitTest
                     webKitBrowser1.Navigate(str_pathToPage106);
                     //MessageBox.Show(statusConnect.ToString());
                 }
+                else
+                {
+                    MessageBox.Show(statusConnect.ToString());
+                }
             }
             else
             {
@@ -113,6 +118,75 @@ namespace WebKitTest
                     webKitBrowser1.Navigate(str_pathFromTxt);
                     //MessageBox.Show(statusConnect.ToString());
                 }
+            }*/
+
+            //HttpWebRequest myHttpWebRequest = (HttpWebRequest)WebRequest.Create("http://192.168.1.80");
+            
+            //HttpWebResponse myHttpWebResponse = (HttpWebResponse)myHttpWebRequest.GetResponse();
+
+            //myHttpWebRequest.AllowAutoRedirect = false;
+            //MessageBox.Show(myHttpWebRequest.HaveResponse.ToString());
+            //HttpWebResponse myHttpWebResponse = (HttpWebResponse)myHttpWebRequest.GetResponse();*/
+            /*HttpWebRequest request = (HttpWebRequest)WebRequest.Create("http://google.com");
+            request.AllowAutoRedirect = false;
+            request.Method = "HEAD";
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                MessageBox.Show("true");
+            }
+            else
+            {
+                MessageBox.Show("false");
+            }*/
+
+            /*try
+            {
+                WebRequest req = (WebRequest)WebRequest.Create("http://192.168.1.80");
+                WebResponse resp = (WebResponse)req.GetResponse();
+                resp.Close();
+            }
+            catch (WebException ex)
+            {
+                //Console.Write(ex.Message);
+                MessageBox.Show(ex.Message);
+            }*/
+
+            /*try
+            {
+                // Create a web request for an invalid site. Substitute the "invalid site" strong in the Create call with a invalid name.
+                HttpWebRequest myHttpWebRequest = (HttpWebRequest)WebRequest.Create("http://192.168.1.80");
+
+                // Get the associated response for the above request.
+                HttpWebResponse myHttpWebResponse = (HttpWebResponse)myHttpWebRequest.GetResponse();
+                myHttpWebResponse.Close();
+            }
+            catch (WebException ex)
+            {
+                MessageBox.Show("This program is expected to throw WebException on successful run." +
+                                    "\n\nException Message :" + ex.Message);
+                if (ex.Status == WebExceptionStatus.ProtocolError)
+                {
+                    MessageBox.Show("Status Code: " + ((HttpWebResponse)ex.Response).StatusCode.ToString() + "Status Description: " + ((HttpWebResponse)ex.Response).StatusDescription.ToString());
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }*/
+
+            try
+            {
+                HttpWebRequest myHttpWebRequest = (HttpWebRequest)WebRequest.Create("http://google.com");
+
+                // Get the associated response for the above request.
+                HttpWebResponse myHttpWebResponse = (HttpWebResponse)myHttpWebRequest.GetResponse();
+
+                myHttpWebResponse.Close();
+            }
+            catch(WebException ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
     }
