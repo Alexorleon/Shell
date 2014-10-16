@@ -13,7 +13,7 @@ namespace WebKitTest
 {
     public partial class Form1 : Form
     {
-        static DateTime current_time = DateTime.Now; // текущее время
+        //static DateTime current_time = DateTime.Now; // текущее время
         private readonly Timer tmrShow; // таймер для периодической проверки соединения
 
         // проверка интернет соединения
@@ -22,9 +22,13 @@ namespace WebKitTest
 
         private bool isFirst = true; // чтобы лишний раз не дергать страницу
 
+        string str_pathToPage106 = ("file:///" + Environment.CurrentDirectory.Replace(@"\", @"/") + "/files/106.html");
+        string str_pathFromTxt = "";
+
         public Form1()
         {
             InitializeComponent();
+            // на весь экран
             FormBorderStyle = FormBorderStyle.None;
             WindowState = FormWindowState.Maximized;
             TopMost = true;
@@ -32,9 +36,17 @@ namespace WebKitTest
             Cursor.Hide();
 
             tmrShow = new Timer(); // создаем новый таймер
-            tmrShow.Interval = 5000; // ставим интервал выполнения единственного события, через 5 секунд
+            tmrShow.Interval = 10000; // ставим интервал выполнения единственного события, через 5 секунд
             tmrShow.Tick += check_link; // создаем событие
             tmrShow.Enabled = true;// включаем таймер
+
+            // заменяем пробелы в адресе до локальной страницы
+            str_pathToPage106 = str_pathToPage106.Replace(@" ", @"%20");
+
+            // считываем адрес из файла
+            System.IO.StreamReader file = new System.IO.StreamReader(Environment.CurrentDirectory + "\\files\\address.txt");
+            str_pathFromTxt = file.ReadLine();
+            file.Close();
         }
 
         private void txtBox_TextChanged(object sender, EventArgs e)
@@ -64,14 +76,14 @@ namespace WebKitTest
             //int counter = 0;
             
             // Read the file and display it line by line.
-            System.IO.StreamReader file = new System.IO.StreamReader(Environment.CurrentDirectory + "\\files\\address.txt");
-            string line = file.ReadLine();
+            //System.IO.StreamReader file = new System.IO.StreamReader(Environment.CurrentDirectory + "\\files\\address.txt");
+            //string line = file.ReadLine();
             /*while ((line = file.ReadLine()) != null)
             {
             }*/
 
-            file.Close();
-            webKitBrowser1.Navigate(line);
+            //file.Close();
+            webKitBrowser1.Navigate(str_pathFromTxt);
         }
 
         // проверяем сеть
@@ -82,28 +94,24 @@ namespace WebKitTest
 
             int Desc;
             bool statusConnect = InternetGetConnectedState(out Desc, 0);
-            //MessageBox.Show(statusConnect.ToString());
-            
+
             // если нет связи, показываем нашу страницу
             if (!statusConnect)
             {
-                if (isFirst)
+                if (isFirst) // если спрашиваем впервые
                 {
-                    string strpath = ("file:///" + Environment.CurrentDirectory.Replace(@"\", @"/") + "/files/106.html");
-                    webKitBrowser1.Navigate(strpath.Replace(@" ", @"%20"));
                     isFirst = false;
+                    webKitBrowser1.Navigate(str_pathToPage106);
+                    //MessageBox.Show(statusConnect.ToString());
                 }
             }
             else
             {
                 if ( !isFirst)
                 {
-                    System.IO.StreamReader file = new System.IO.StreamReader(Environment.CurrentDirectory + "\\files\\address.txt");
-                    string line = file.ReadLine();
-
-                    file.Close();
-                    webKitBrowser1.Navigate(line);
                     isFirst = true;
+                    webKitBrowser1.Navigate(str_pathFromTxt);
+                    //MessageBox.Show(statusConnect.ToString());
                 }
             }
         }
