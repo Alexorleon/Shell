@@ -16,7 +16,6 @@ namespace WebKitTest
 {
     public partial class Form1 : Form
     {
-        //static DateTime current_time = DateTime.Now; // текущее время
         private readonly Timer tmrShow; // таймер для периодической проверки соединения
 
         // проверка интернет соединения
@@ -50,11 +49,19 @@ namespace WebKitTest
             System.IO.StreamReader file = new System.IO.StreamReader(Environment.CurrentDirectory + "\\files\\address.txt");
             str_pathFromTxt = file.ReadLine();
             file.Close();
+
+            //int counter = 0;
+
+            // Read the file and display it line by line.
+            //System.IO.StreamReader file = new System.IO.StreamReader(Environment.CurrentDirectory + "\\files\\address.txt");
+            //string line = file.ReadLine();
+            /*while ((line = file.ReadLine()) != null)
+            {
+            }*/
         }
 
         private void txtBox_TextChanged(object sender, EventArgs e)
         {
-
         }
 
         private void txtBox_KeyDown(object sender, KeyEventArgs e)
@@ -63,29 +70,15 @@ namespace WebKitTest
 
         private void txtBox_KeyPress(object sender, KeyPressEventArgs e)
         {
-            /*if (e.KeyChar == '\r')
-            {
-                webKitBrowser1.Navigate(txtBox.Text);
-            }*/
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
         }
 
         private void webKitBrowser1_Load(object sender, EventArgs e)
         {
-            //int counter = 0;
-            
-            // Read the file and display it line by line.
-            //System.IO.StreamReader file = new System.IO.StreamReader(Environment.CurrentDirectory + "\\files\\address.txt");
-            //string line = file.ReadLine();
-            /*while ((line = file.ReadLine()) != null)
-            {
-            }*/
-
-            //file.Close();
+            // сразу переходим на страницу авторизации
             webKitBrowser1.Navigate(str_pathFromTxt);
         }
 
@@ -142,18 +135,6 @@ namespace WebKitTest
 
             /*try
             {
-                WebRequest req = (WebRequest)WebRequest.Create("http://192.168.1.80");
-                WebResponse resp = (WebResponse)req.GetResponse();
-                resp.Close();
-            }
-            catch (WebException ex)
-            {
-                //Console.Write(ex.Message);
-                MessageBox.Show(ex.Message);
-            }*/
-
-            /*try
-            {
                 // Create a web request for an invalid site. Substitute the "invalid site" strong in the Create call with a invalid name.
                 HttpWebRequest myHttpWebRequest = (HttpWebRequest)WebRequest.Create("http://192.168.1.80");
 
@@ -175,18 +156,44 @@ namespace WebKitTest
                 MessageBox.Show(ex.Message);
             }*/
 
+            bool status = true;
             try
             {
-                HttpWebRequest myHttpWebRequest = (HttpWebRequest)WebRequest.Create("http://google.com");
+                HttpWebRequest myHttpWebRequest = (HttpWebRequest)WebRequest.Create(str_pathFromTxt);
 
                 // Get the associated response for the above request.
                 HttpWebResponse myHttpWebResponse = (HttpWebResponse)myHttpWebRequest.GetResponse();
 
                 myHttpWebResponse.Close();
+                status = true;
             }
             catch(WebException ex)
             {
-                MessageBox.Show(ex.Message);
+                //MessageBox.Show(ex.Message);
+                status = false;
+            }
+
+            if ( !status)
+            {
+                if (isFirst) // если спрашиваем впервые
+                {
+                    isFirst = false;
+                    webKitBrowser1.Navigate(str_pathToPage106);
+                    //MessageBox.Show(statusConnect.ToString());
+                }
+                /*else
+                {
+                    MessageBox.Show(statusConnect.ToString());
+                }*/
+            }
+            else
+            {
+                if ( !isFirst)
+                {
+                    isFirst = true;
+                    webKitBrowser1.Navigate(str_pathFromTxt);
+                    //MessageBox.Show(statusConnect.ToString());
+                }
             }
         }
     }
