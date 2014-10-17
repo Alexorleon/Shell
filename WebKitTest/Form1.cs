@@ -160,6 +160,7 @@ namespace WebKitTest
             try
             {
                 HttpWebRequest myHttpWebRequest = (HttpWebRequest)WebRequest.Create(str_pathFromTxt);
+                myHttpWebRequest.AllowAutoRedirect = false;
                 myHttpWebRequest.Timeout = 5000;
                 // Get the associated response for the above request.
                 HttpWebResponse myHttpWebResponse = (HttpWebResponse)myHttpWebRequest.GetResponse();
