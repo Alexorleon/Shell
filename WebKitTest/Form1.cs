@@ -30,6 +30,7 @@ namespace WebKitTest
         public Form1()
         {
             InitializeComponent();
+            webKitBrowser1.IsScriptingEnabled = true;
             // на весь экран
             /*FormBorderStyle = FormBorderStyle.None;
             WindowState = FormWindowState.Maximized;
