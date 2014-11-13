@@ -32,11 +32,11 @@ namespace WebKitTest
             InitializeComponent();
             webKitBrowser1.IsScriptingEnabled = true;
             // на весь экран
-            /*FormBorderStyle = FormBorderStyle.None;
+            FormBorderStyle = FormBorderStyle.None;
             WindowState = FormWindowState.Maximized;
             TopMost = true;
 
-            Cursor.Hide();*/
+            Cursor.Hide();
 
             tmrShow = new Timer(); // создаем новый таймер
             tmrShow.Interval = 10000; // ставим интервал выполнения единственного события, через 5 секунд
