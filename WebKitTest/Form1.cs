@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Runtime;
 using System.Runtime.InteropServices;
+//using System.Threading;
 
 using System.Net;
 using System.IO;
@@ -157,6 +158,8 @@ namespace WebKitTest
                 MessageBox.Show(ex.Message);
             }*/
 
+            tmrShow.Enabled = false;
+
             bool status = true;
             try
             {
@@ -197,6 +200,21 @@ namespace WebKitTest
                     //MessageBox.Show(statusConnect.ToString());
                 }
             }
+
+            tmrShow.Enabled = true;
         }
     }
+
+    /*public class checkLinker
+    {
+        private readonly Timer tmrShow; // таймер для периодической проверки соединения
+
+        public checkLinker()
+        {
+            tmrShow = new Timer(); // создаем новый таймер
+            tmrShow.Interval = 10000; // ставим интервал выполнения единственного события, через 5 секунд
+            tmrShow.Tick += check_link; // создаем событие
+            tmrShow.Enabled = true;// включаем таймер
+        }
+    }*/
 }
